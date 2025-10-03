@@ -1,4 +1,4 @@
-"""
+https://github.com/Dayanch437/dermanlyk-osumluk.git"""
 Custom Django management command to create a superuser with predefined credentials
 Usage: python manage.py create_superuser
 """
