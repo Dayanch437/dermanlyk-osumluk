@@ -42,3 +42,17 @@ class BaseModel(TimeStampedModel, SoftDeleteModel):
     """
     class Meta:
         abstract = True
+
+
+class MedicalHerb(BaseModel):
+    name = models.CharField(max_length=100)
+    character = models.TextField()
+    living_specification = models.TextField()
+    chemical_composition = models.TextField()
+    raw_material_for_medicine = models.TextField()
+    usage = models.TextField()
+    natural_source = models.TextField()
+    photo = models.ImageField(upload_to='herbs/', null=True, blank=True, help_text="Photo of the medical herb")
+    
+    def __str__(self):
+        return self.name

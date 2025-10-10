@@ -3,7 +3,7 @@ import { WordSearchResponse, WordDetail, SearchFilters } from '../types';
 
 // Configure axios instance
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api',
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -92,6 +92,7 @@ export const wordService = {
   getWordDetail: async (wordId: string): Promise<WordDetail> => {
     try {
       const response = await api.get(`/words/${wordId}`);
+      console.log('API Word Detail Response:', response.data);
       return response.data;
     } catch (error) {
       console.error('Get word detail error:', error);
@@ -139,6 +140,18 @@ export const wordService = {
       return response.data;
     } catch (error) {
       console.error('Get word of the day error:', error);
+      throw error;
+    }
+  },
+
+  // Global search (calls top-level /search endpoint)
+  globalSearch: async (query: string, limit: number = 20): Promise<WordSearchResponse> => {
+    try {
+      const params = new URLSearchParams({ q: query, limit: limit.toString() });
+      const response = await api.get(`/search/?${params}`);
+      return response.data;
+    } catch (error) {
+      console.error('Global search error:', error);
       throw error;
     }
   },

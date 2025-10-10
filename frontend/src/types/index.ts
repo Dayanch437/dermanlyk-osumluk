@@ -8,9 +8,24 @@ export interface WordSearchResponse {
 
 export interface Word {
   id: string;
-  word: string;
-  definition: string;
-  partOfSpeech: string;
+  name: string;
+  character?: string;
+  living_specification?: string;
+  natural_source?: string;
+  usage?: string;
+  chemical_composition?: string;
+  raw_material_for_medicine?: string;
+  created_at?: string;
+  updated_at?: string;
+  is_deleted?: boolean;
+  deleted_at?: string | null;
+  photo?: string;  // Relative path to photo
+  photo_url?: string;  // Full URL to photo
+  
+  // Legacy field mapping
+  word?: string;
+  definition?: string;
+  partOfSpeech?: string;
   pronunciation?: string;
   etymology?: string;
   examples?: string[];

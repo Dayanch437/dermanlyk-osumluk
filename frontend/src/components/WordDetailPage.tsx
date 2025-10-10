@@ -14,6 +14,7 @@ import {
   Spin,
   Alert,
 } from 'antd';
+import { wordService } from '../services/api';
 import { 
   ArrowLeftOutlined, 
   EnvironmentOutlined,
@@ -37,6 +38,8 @@ interface OsumlukMaglumaty {
   himiki_duzumi: string;
   peydaly_nys: string;
   suraty: string;
+  photo?: string; // New field for backend photo URL (relative path)
+  photo_url?: string; // Full URL to the photo
   kategoriýa: string;
   goşmaça_maglumat?: string[];
   peýdanyş_usuly?: string[];
@@ -212,17 +215,41 @@ const WordDetailPage: React.FC = () => {
       setError(null);
 
       try {
-        // API çagyryşynyň simulýasiýasy
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Fetch data from API instead of mock data
+        const apiData = await wordService.getWordDetail(wordId);
         
-        const maglumat = mockOsumlukMaglumatlary[wordId];
-        if (maglumat) {
-          setOsumlukMaglumaty(maglumat);
+        // Map API response to OsumlukMaglumaty structure
+        const maglumat: OsumlukMaglumaty = {
+          id: apiData.id,
+          ady: apiData.word || apiData.name,
+          hasiyeti: apiData.character || '',
+          yasayys_ayratynlygy: apiData.living_specification || '',
+          yayraway: apiData.natural_source || '',
+          tegigy: 'Theaceae maşgalasy', // Default family for now
+          gory: 'Camellia sinensis', // Default genus for now
+          cig_maly: apiData.raw_material_for_medicine || '',
+          himiki_duzumi: apiData.chemical_composition || '',
+          peydaly_nys: apiData.usage || '',
+          suraty: '🌿', // Default emoji
+          photo: apiData.photo || '', // New photo field from API
+          photo_url: apiData.photo_url || '', // Full URL to the photo
+          kategoriýa: 'Dermanlyk ösümlik',
+          goşmaça_maglumat: ['Dermanlyk ösümlikleriň katalogyndan maglumat'],
+          peýdanyş_usuly: ['Tebigy däri hökmünde ulanylýar'],
+          duýduryş: 'Ulanmazdan öň lukmandan maslahat alyň'
+        };
+        
+        setOsumlukMaglumaty(maglumat);
+      } catch (err) {
+        console.error('Error fetching herb details:', err);
+        
+        // Fallback to mock data if API fails
+        const mockMaglumat = mockOsumlukMaglumatlary[wordId];
+        if (mockMaglumat) {
+          setOsumlukMaglumaty(mockMaglumat);
         } else {
           setError('Ösümlik tapylmady');
         }
-      } catch (err) {
-        setError('Maglumat ýükläp bolmady');
       } finally {
         setLoading(false);
       }
@@ -333,22 +360,50 @@ const WordDetailPage: React.FC = () => {
               <div style={{ padding: '40px 40px 20px' }}>
                 <Row gutter={[24, 24]} align="top">
                   <Col xs={24} md={8}>
-                    <div style={{
-                      width: '100%',
-                      height: '200px',
-                      borderRadius: '16px',
-                      background: 'linear-gradient(45deg, #2d5016, #4a7c3a)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontSize: '48px',
-                      fontWeight: 'bold',
-                      fontFamily: 'serif',
-                      marginBottom: '20px'
-                    }}>
-                      {osumlukMaglumaty.ady.charAt(0)}
-                    </div>
+                    {(osumlukMaglumaty.photo_url || osumlukMaglumaty.photo) ? (
+                      <div style={{
+                        width: '100%',
+                        height: '200px',
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                        marginBottom: '20px'
+                      }}>
+                        <img 
+                          src={osumlukMaglumaty.photo_url || (osumlukMaglumaty.photo?.startsWith('http') 
+                            ? osumlukMaglumaty.photo 
+                            : `http://localhost:8000${osumlukMaglumaty.photo}`)}
+                          alt={osumlukMaglumaty.ady}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                          }}
+                          onError={(e) => {
+                            console.error('Image loading error:', e);
+                            const target = e.target as HTMLImageElement;
+                            target.onerror = null; // Prevent infinite loop
+                            target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="18">🌿</text></svg>';
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div style={{
+                        width: '100%',
+                        height: '200px',
+                        borderRadius: '16px',
+                        background: 'linear-gradient(45deg, #2d5016, #4a7c3a)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white',
+                        fontSize: '48px',
+                        fontWeight: 'bold',
+                        fontFamily: 'serif',
+                        marginBottom: '20px'
+                      }}>
+                        {osumlukMaglumaty.ady.charAt(0)}
+                      </div>
+                    )}
                   </Col>
                   <Col xs={24} md={16}>
                     <Space direction="vertical" size="small" style={{ width: '100%' }}>

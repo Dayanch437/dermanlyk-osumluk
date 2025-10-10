@@ -23,6 +23,8 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 # API URL patterns
 api_urlpatterns = [
     path('auth/', include('apps.users.urls')),
+    path('', include('apps.core.urls')),
+    path('search/', include('apps.core.urls_search')),
     # Add more API URLs here as you create new apps
 ]
 

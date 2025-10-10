@@ -17,6 +17,7 @@ import {
   Divider,
   Avatar,
 } from 'antd';
+import { wordService } from '../services/api';
 import { 
   SearchOutlined, 
   EnvironmentOutlined, 
@@ -38,143 +39,102 @@ const { Header, Content, Footer } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
 interface Osumlik {
-  id: string;
-  ady: string;
-  hasiyeti: string;
-  yasayys_ayratynlygy: string;
-  yayraway: string;
-  tegigy: string;
-  gory: string;
-  cig_maly: string;
-  himiki_duzumi: string;
-  peydaly_nys: string;
-  suraty: string;
-  kategoriýa: string;
+  id: string | number;
+  name: string;
+  character: string;
+  living_specification: string;
+  natural_source: string;
+  usage: string;
+  chemical_composition: string;
+  raw_material_for_medicine: string;
+  created_at: string;
+  updated_at: string;
+  is_deleted: boolean;
+  deleted_at: string | null;
+  photo?: string;  // Local file path
+  photo_url?: string;  // Full URL to photo
+  
+  // Legacy fields for compatibility with existing UI
+  ady?: string;
+  hasiyeti?: string;
+  yasayys_ayratynlygy?: string;
+  yayraway?: string;
+  tegigy?: string;
+  gory?: string;
+  cig_maly?: string;
+  himiki_duzumi?: string;
+  peydaly_nys?: string;
+  suraty?: string;
+  kategoriýa?: string;
 }
 
 const HomePage: React.FC = () => {
   const [searchResults, setSearchResults] = useState<Osumlik[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState<{value: string, label: string}[]>([]);
+  const [suggestions, setSuggestions] = useState<{value: string | number, label: string}[]>([]);
   const [showRecommendations, setShowRecommendations] = useState(true);
+  const [herbs, setHerbs] = useState<Osumlik[]>([]);
   const navigate = useNavigate();
 
-  // Turkmen medicinal plants database
-  const mockOsumlikler: Osumlik[] = [
-    {
-      id: '1',
-      ady: 'Alma',
-      hasiyeti: 'Witaminlara baý, aşgazan-içege peýdaly',
-      yasayys_ayratynlygy: 'Temperaturaly klimatda öser',
-      yayraway: 'Günorta Aziýa',
-      tegigy: 'Rosaceae',
-      gory: 'Malus',
-      cig_maly: 'Meýwe',
-      himiki_duzumi: 'Witamin C, şeker, organiki kislotalar',
-      peydaly_nys: 'Aşgazan işini gowulandyrýar, immuniteti güýçlendirýär',
-      suraty: '🍎',
-      kategoriýa: 'Meýweli ösümlik'
-    },
-    {
-      id: '2',
-      ady: 'Sarymsaküs',
-      hasiyeti: 'Antibakterial, immunomodulirujuşy täsir',
-      yasayys_ayratynlygy: 'Gury we çygly toprakda öser',
-      yayraway: 'Orta Aziýa',
-      tegigy: 'Amaryllidaceae',
-      gory: 'Allium',
-      cig_maly: 'Baş',
-      himiki_duzumi: 'Allitsin, efir ýaglary, witaminler',
-      peydaly_nys: 'Mikroblara garşy göreşýär, gan basyşyny kadalaşdyrýar',
-      suraty: '🧄',
-      kategoriýa: 'Antibakterial ösümlik'
-    },
-    {
-      id: '3',
-      ady: 'Aýdogan',
-      hasiyeti: 'Ýatşylandyryjy, antioksidant täsir',
-      yasayys_ayratynlygy: 'Guraň topraklarda öser',
-      yayraway: 'Türkmenistan',
-      tegigy: 'Lamiaceae',
-      gory: 'Salvia',
-      cig_maly: 'Ýaprak',
-      himiki_duzumi: 'Efir ýaglary, flavonoidler',
-      peydaly_nys: 'Nerw ulgamyny rahatlady, ukynyň hilini gowulaşdyrýar',
-      suraty: '🌿',
-      kategoriýa: 'Ýatşylandyryjy ösümlik'
-    },
-    {
-      id: '4',
-      ady: 'Narpyz',
-      hasiyeti: 'Aşgazany güýçlendirýär, dem alşy aňsatlaşdyrýar',
-      yasayys_ayratynlygy: 'Çygly topraklarda öser',
-      yayraway: 'Ýewropa',
-      tegigy: 'Lamiaceae',
-      gory: 'Mentha',
-      cig_maly: 'Ýaprak',
-      himiki_duzumi: 'Mentol, efir ýaglary',
-      peydaly_nys: 'Aşgazan agyrylaryny kämeltýär, dem alşy aňsatlaşdyrýar',
-      suraty: '🌱',
-      kategoriýa: 'Ýerli ösümlik'
-    },
-    {
-      id: '5',
-      ady: 'Öwezlilik',
-      hasiyeti: 'Ykjam ediji, ýara bejermek üçin',
-      yasayys_ayratynlygy: 'Gury şertlerde öser',
-      yayraway: 'Türkmenistan',
-      tegigy: 'Fabaceae',
-      gory: 'Glycyrrhiza',
-      cig_maly: 'Kök',
-      himiki_duzumi: 'Glitsirizin, flavonoidler',
-      peydaly_nys: 'Ýaralary bejerýär, içegäni çişdirýär',
-      suraty: '🌾',
-      kategoriýa: 'Ykjam ediji ösümlik'
-    },
-    {
-      id: '6',
-      ady: 'Garagat',
-      hasiyeti: 'Antioksidant, göze peýdaly',
-      yasayys_ayratynlygy: 'Sowuk klimatda öser',
-      yayraway: 'Demirgazyk Ýewropa',
-      tegigy: 'Ericaceae',
-      gory: 'Vaccinium',
-      cig_maly: 'Meýwe',
-      himiki_duzumi: 'Antosianlar, witamin C',
-      peydaly_nys: 'Göz düşünjäni gowulaşdyrýar, garrylyk garşy alýar',
-      suraty: '🫐',
-      kategoriýa: 'Antioksidant ösümlik'
-    },
-    {
-      id: '7',
-      ady: 'Çaý',
-      hasiyeti: 'Güýç beriji, antioksidant',
-      yasayys_ayratynlygy: 'Tropiki klimatda öser',
-      yayraway: 'Hytaý',
-      tegigy: 'Theaceae',
-      gory: 'Camellia',
-      cig_maly: 'Ýaprak',
-      himiki_duzumi: 'Kofein, tannindler, antioksidantlar',
-      peydaly_nys: 'Güýç berýär, ýadyny gowulaşdyrýar',
-      suraty: '🍃',
-      kategoriýa: 'Güýçlendiriji ösümlik'
-    },
-    {
-      id: '8',
-      ady: 'Limon',
-      hasiyeti: 'Witamin C-e baý, immunitet güýçlendiriji',
-      yasayys_ayratynlygy: 'Subtropiki klimatda öser',
-      yayraway: 'Günorta Aziýa',
-      tegigy: 'Rutaceae',
-      gory: 'Citrus',
-      cig_maly: 'Meýwe',
-      himiki_duzumi: 'Witamin C, limon kislotasy, efir ýaglary',
-      peydaly_nys: 'Immunitet güýçlendirýär, detoks täsir ediýär',
-      suraty: '🍋',
-      kategoriýa: 'Witaminly ösümlik'
-    }
-  ];
+  // Fetch data from API when component mounts
+  useEffect(() => {
+    const fetchHerbs = async () => {
+      try {
+        setLoading(true);
+        // Fetch herbs from API
+        const response = await wordService.searchWords('', {}, 1, 100);
+        
+        // Map API response to local structure
+        console.log('API Response herbs:', response.results);
+        const apiHerbs = response.results.map((herb: any) => {
+          const mappedHerb = {
+            id: herb.id,
+            name: herb.name,
+            character: herb.character || '',
+            living_specification: herb.living_specification || '',
+            natural_source: herb.natural_source || '',
+            usage: herb.usage || '',
+            chemical_composition: herb.chemical_composition || '',
+            raw_material_for_medicine: herb.raw_material_for_medicine || '',
+            created_at: herb.created_at,
+            updated_at: herb.updated_at,
+            is_deleted: herb.is_deleted,
+            deleted_at: herb.deleted_at,
+            photo: herb.photo || null, // Add photo field
+            photo_url: herb.photo_url || null, // Add photo_url field
+            
+            // Legacy mappings for UI compatibility
+            ady: herb.name,
+            hasiyeti: herb.character || 'Mälim däl',
+            yasayys_ayratynlygy: herb.living_specification || 'Mälim däl',
+            yayraway: herb.natural_source || 'Mälim däl',
+            tegigy: 'Plant Family',
+            gory: 'Plant Genus',
+            cig_maly: herb.raw_material_for_medicine || 'Mälim däl',
+            himiki_duzumi: herb.chemical_composition || 'Mälim däl',
+            peydaly_nys: herb.usage || 'Mälim däl',
+            suraty: '🌿', // Default plant emoji
+            kategoriýa: 'Derman ösümligi'
+          };
+          console.log('Mapped herb with photo:', mappedHerb.photo);
+          return mappedHerb;
+        });
+        
+        setHerbs(apiHerbs);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching herbs:', error);
+        setLoading(false);
+        // Fallback to empty array
+        setHerbs([]);
+      }
+    };
+    
+    fetchHerbs();
+  }, []);
+
+  // Data for the application comes from API via useEffect hook above
 
   const handleInputChange = (value: string) => {
     setSearchTerm(value);
@@ -187,15 +147,15 @@ const HomePage: React.FC = () => {
     }
 
     // Generate suggestions with plant IDs for direct navigation
-    const filteredSuggestions = mockOsumlikler
+    const filteredSuggestions = herbs
       .filter(osumlik => 
-        osumlik.ady.toLowerCase().includes(value.toLowerCase()) ||
-        osumlik.kategoriýa.toLowerCase().includes(value.toLowerCase())
+        (osumlik.ady?.toLowerCase().includes(value.toLowerCase()) || false) ||
+        (osumlik.kategoriýa?.toLowerCase().includes(value.toLowerCase()) || false)
       )
       .slice(0, 5)
       .map(osumlik => ({
         value: osumlik.id, // Use ID instead of name for direct navigation
-        label: `${osumlik.suraty} ${osumlik.ady} - ${osumlik.kategoriýa}`
+        label: `🌿 ${osumlik.ady || osumlik.name} - Derman Ösümligi`
       }));
     
     setSuggestions(filteredSuggestions);
@@ -214,39 +174,109 @@ const HomePage: React.FC = () => {
     setSearchTerm(value);
     setShowRecommendations(false);
 
-    // Simulate API call delay
-    setTimeout(() => {
-      const filteredResults = mockOsumlikler.filter(osumlik => 
-        osumlik.ady.toLowerCase().includes(value.toLowerCase()) ||
-        osumlik.hasiyeti.toLowerCase().includes(value.toLowerCase()) ||
-        osumlik.kategoriýa.toLowerCase().includes(value.toLowerCase()) ||
-        osumlik.yayraway.toLowerCase().includes(value.toLowerCase()) ||
-        osumlik.peydaly_nys.toLowerCase().includes(value.toLowerCase())
-      );
+    try {
+      // Use the API service to search
+      const response = await wordService.searchWords(value, {}, 1, 20);
       
-      setSearchResults(filteredResults);
+      // Map API response to local structure (same mapping as in useEffect)
+      const apiResults = response.results.map((herb: any) => ({
+        id: herb.id,
+        name: herb.name,
+        character: herb.character || '',
+        living_specification: herb.living_specification || '',
+        natural_source: herb.natural_source || '',
+        usage: herb.usage || '',
+        chemical_composition: herb.chemical_composition || '',
+        raw_material_for_medicine: herb.raw_material_for_medicine || '',
+        created_at: herb.created_at,
+        updated_at: herb.updated_at,
+        is_deleted: herb.is_deleted,
+        deleted_at: herb.deleted_at,
+        photo: herb.photo || null, // Add photo field
+        photo_url: herb.photo_url || null, // Add photo_url field
+        
+        // Legacy mappings for UI compatibility
+        ady: herb.name,
+        hasiyeti: herb.character || 'Mälim däl',
+        yasayys_ayratynlygy: herb.living_specification || 'Mälim däl',
+        yayraway: herb.natural_source || 'Mälim däl',
+        tegigy: 'Plant Family',
+        gory: 'Plant Genus',
+        cig_maly: herb.raw_material_for_medicine || 'Mälim däl',
+        himiki_duzumi: herb.chemical_composition || 'Mälim däl',
+        peydaly_nys: herb.usage || 'Mälim däl',
+        suraty: '🌿', // Default plant emoji
+        kategoriýa: 'Derman ösümligi'
+      }));
+      
+      setSearchResults(apiResults);
       setLoading(false);
-    }, 300);
+    } catch (error) {
+      console.error('Error searching herbs:', error);
+      setLoading(false);
+      setSearchResults([]);
+    }
   };
 
   // Debounced search for real-time results
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       if (searchTerm.trim()) {
-        // Inline search to avoid dependency issues
-        const filteredResults = mockOsumlikler.filter(osumlik => 
-          osumlik.ady.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          osumlik.hasiyeti.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          osumlik.kategoriýa.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          osumlik.yayraway.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          osumlik.peydaly_nys.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setSearchResults(filteredResults);
+        try {
+          // Use herbs state for local filtering to avoid excessive API calls
+          const filteredResults = herbs.filter((herb: Osumlik) => 
+            (herb.ady?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+            (herb.hasiyeti?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+            (herb.kategoriýa?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+            (herb.yayraway?.toLowerCase().includes(searchTerm.toLowerCase()) || false) ||
+            (herb.peydaly_nys?.toLowerCase().includes(searchTerm.toLowerCase()) || false)
+          );
+          
+          // If we have local results, use them for immediate feedback
+          if (filteredResults.length > 0) {
+            setSearchResults(filteredResults);
+          } else {
+            // Otherwise, make an API call for more comprehensive search
+            const response = await wordService.searchWords(searchTerm, {}, 1, 20);
+            const apiResults = response.results.map((herb: any) => ({
+              id: herb.id,
+              name: herb.name,
+              character: herb.character || '',
+              living_specification: herb.living_specification || '',
+              natural_source: herb.natural_source || '',
+              usage: herb.usage || '',
+              chemical_composition: herb.chemical_composition || '',
+              raw_material_for_medicine: herb.raw_material_for_medicine || '',
+              created_at: herb.created_at,
+              updated_at: herb.updated_at,
+              is_deleted: herb.is_deleted,
+              deleted_at: herb.deleted_at,
+              photo: herb.photo || null, // Add photo field
+              photo_url: herb.photo_url || null, // Add photo_url field
+              
+              // Legacy mappings
+              ady: herb.name,
+              hasiyeti: herb.character || 'Mälim däl',
+              yasayys_ayratynlygy: herb.living_specification || 'Mälim däl',
+              yayraway: herb.natural_source || 'Mälim däl',
+              tegigy: 'Plant Family',
+              gory: 'Plant Genus',
+              cig_maly: herb.raw_material_for_medicine || 'Mälim däl',
+              himiki_duzumi: herb.chemical_composition || 'Mälim däl',
+              peydaly_nys: herb.usage || 'Mälim däl',
+              suraty: '🌿',
+              kategoriýa: 'Derman ösümligi'
+            }));
+            setSearchResults(apiResults);
+          }
+        } catch (error) {
+          console.error('Error in debounced search:', error);
+        }
       }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [searchTerm]);
+  }, [searchTerm, herbs]);
 
   const handleItemClick = (osumlik: Osumlik) => {
     navigate(`/osumlik/${osumlik.id}`);
@@ -436,16 +466,41 @@ const HomePage: React.FC = () => {
                             height: '300px'
                           }}
                           cover={
-                            <div style={{ 
-                              height: '80px', 
-                              background: 'linear-gradient(135deg, #f0f9f0, #e8f5e8)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontSize: '40px'
-                            }}>
-                              {osumlik.suraty}
-                            </div>
+                            (osumlik.photo_url || osumlik.photo) ? (
+                              <div style={{ 
+                                height: '80px',
+                                overflow: 'hidden'
+                              }}>
+                                <img 
+                                  src={osumlik.photo_url || (osumlik.photo?.startsWith('http') 
+                                    ? osumlik.photo 
+                                    : `http://localhost:8000${osumlik.photo}`)}
+                                  alt={osumlik.ady || osumlik.name}
+                                  style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover'
+                                  }}
+                                  onError={(e) => {
+                                    console.error('Image loading error:', e);
+                                    // Fallback to emoji
+                                    (e.target as HTMLImageElement).style.display = 'none';
+                                    (e.target as HTMLImageElement).parentElement!.innerHTML = '🌿';
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div style={{ 
+                                height: '80px', 
+                                background: 'linear-gradient(135deg, #f0f9f0, #e8f5e8)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '40px'
+                              }}>
+                                {osumlik.suraty || '🌿'}
+                              </div>
+                            )
                           }
                           actions={[
                             <Button type="link" icon={<HeartOutlined />}>Halanýanlar</Button>,
