@@ -52,7 +52,7 @@ export const wordService = {
     query: string, 
     filters?: SearchFilters,
     page: number = 1,
-    limit: number = 10
+    limit: number = 50 // Default to 50 for name-only display
   ): Promise<WordSearchResponse> => {
     try {
       const params = new URLSearchParams({
@@ -145,9 +145,13 @@ export const wordService = {
   },
 
   // Global search (calls top-level /search endpoint)
-  globalSearch: async (query: string, limit: number = 20): Promise<WordSearchResponse> => {
+  globalSearch: async (query: string, page: number = 1, limit: number = 100): Promise<WordSearchResponse> => {
     try {
-      const params = new URLSearchParams({ q: query, limit: limit.toString() });
+      const params = new URLSearchParams({ 
+        q: query, 
+        page: page.toString(),
+        limit: limit.toString() 
+      });
       const response = await api.get(`/search/?${params}`);
       return response.data;
     } catch (error) {

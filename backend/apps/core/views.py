@@ -2,12 +2,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from django.db.models import Q
 import random
 
 from .models import MedicalHerb
 from .serializers import MedicalHerbSerializer
-from rest_framework.permissions import AllowAny
+from .pagination import LargeResultsSetPagination
 
 
 class MedicalHerbViewSet(viewsets.ReadOnlyModelViewSet):
@@ -16,6 +18,7 @@ class MedicalHerbViewSet(viewsets.ReadOnlyModelViewSet):
 	serializer_class = MedicalHerbSerializer
 	permission_classes = [AllowAny]  # Allow unrestricted access for frontend integration
 	authentication_classes = []  # Disable authentication for these read-only endpoints
+	pagination_class = LargeResultsSetPagination  # Use the large pagination for listing all herbs
 	
 	def get_serializer_context(self):
 		"""Add request to serializer context for generating absolute URLs."""
@@ -27,23 +30,44 @@ class MedicalHerbViewSet(viewsets.ReadOnlyModelViewSet):
 	def search(self, request):
 		q = request.query_params.get('q', '').strip()
 		page = int(request.query_params.get('page', 1))
-		limit = int(request.query_params.get('limit', 10))
+		limit = int(request.query_params.get('limit', 50))  # Default to 50 for name-only display
 
 		if not q:
 			return Response({'results': [], 'count': 0})
 
-		qs = self.queryset.filter(
+		# First look for exact name matches
+		exact_matches = list(self.queryset.filter(name__iexact=q))
+		
+		# Then look for name-startswith matches
+		starts_with_matches = list(self.queryset.filter(name__istartswith=q).exclude(name__iexact=q))
+		
+		# Then look for other fields matches
+		other_matches = list(self.queryset.filter(
 			Q(name__icontains=q) |
 			Q(character__icontains=q) |
 			Q(usage__icontains=q) |
 			Q(natural_source__icontains=q)
-		)
+		).exclude(
+			Q(name__iexact=q) | 
+			Q(name__istartswith=q)
+		))
 
-		total = qs.count()
+		# Combine with priority order
+		combined_qs = exact_matches + starts_with_matches + other_matches
+		
+		total = len(combined_qs)
 		start = (page - 1) * limit
 		end = start + limit
-		serializer = self.get_serializer(qs[start:end], many=True)
-		return Response({'results': serializer.data, 'count': total})
+		
+		page_herbs = combined_qs[start:end]
+		serializer = self.get_serializer(page_herbs, many=True)
+		
+		return Response({
+			'results': serializer.data, 
+			'count': total,
+			'page': page,
+			'pages': (total + limit - 1) // limit  # Ceiling division for total pages
+		})
 
 	@action(detail=False, methods=['get'])
 	def suggestions(self, request):
@@ -82,24 +106,49 @@ class MedicalHerbViewSet(viewsets.ReadOnlyModelViewSet):
 		return Response(serializer.data)
 
 
-from rest_framework.views import APIView
-
-
 class GlobalSearchView(APIView):
 	permission_classes = [AllowAny]
 
 	def get(self, request):
 		q = request.query_params.get('q', '').strip()
-		limit = int(request.query_params.get('limit', 20))
+		limit = int(request.query_params.get('limit', 100))  # Default to 100 for name-only display
+		page = int(request.query_params.get('page', 1))
+		
 		if not q:
 			return Response({'results': [], 'count': 0})
 
-		qs = MedicalHerb.objects.filter(
+		queryset = MedicalHerb.objects.filter(is_deleted=False)
+		
+		# First look for exact name matches
+		exact_matches = list(queryset.filter(name__iexact=q))
+		
+		# Then look for name-startswith matches
+		starts_with_matches = list(queryset.filter(name__istartswith=q).exclude(name__iexact=q))
+		
+		# Then look for other fields matches
+		other_matches = list(queryset.filter(
 			Q(name__icontains=q) |
 			Q(character__icontains=q) |
 			Q(usage__icontains=q) |
 			Q(natural_source__icontains=q)
-		).filter(is_deleted=False).order_by('name')[:limit]
+		).exclude(
+			Q(name__iexact=q) | 
+			Q(name__istartswith=q)
+		))
 
-		serializer = MedicalHerbSerializer(qs, many=True, context={'request': request})
-		return Response({'results': serializer.data, 'count': len(serializer.data)})
+		# Combine with priority order
+		combined_results = exact_matches + starts_with_matches + other_matches
+		
+		total = len(combined_results)
+		start = (page - 1) * limit
+		end = start + limit
+		
+		page_herbs = combined_results[start:end]
+		serializer = MedicalHerbSerializer(page_herbs, many=True, context={'request': request})
+		
+		return Response({
+			'results': serializer.data, 
+			'count': total,
+			'page': page,
+			'pages': (total + limit - 1) // limit  # Ceiling division for total pages
+		})

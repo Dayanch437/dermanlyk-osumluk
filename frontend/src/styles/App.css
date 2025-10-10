@@ -48,6 +48,17 @@ code {
 /* Ensure only one search input */
 .ant-input-search {
   display: block !important;
+}
+
+/* Herb list item styling */
+.herb-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+  cursor: pointer;
+  background-color: #f8f9fa !important;
+}
+
+.herb-list-item {
   width: 100% !important;
 }
 

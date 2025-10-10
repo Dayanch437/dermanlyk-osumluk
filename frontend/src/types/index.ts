@@ -1,9 +1,13 @@
 // API Response Types
 export interface WordSearchResponse {
   results: Word[];
-  total: number;
+  count: number;
   page: number;
-  limit: number;
+  pages: number;
+  links?: {
+    next: string | null;
+    previous: string | null;
+  };
 }
 
 export interface Word {
