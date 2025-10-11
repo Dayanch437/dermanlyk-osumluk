@@ -1,5 +1,5 @@
 from django.db import models
-
+from .fields import AdvanceThumbnailField
 
 class TimeStampedModel(models.Model):
     """
@@ -46,13 +46,13 @@ class BaseModel(TimeStampedModel, SoftDeleteModel):
 
 class MedicalHerb(BaseModel):
     name = models.CharField(max_length=100)
-    character = models.TextField()
-    living_specification = models.TextField()
-    chemical_composition = models.TextField()
-    raw_material_for_medicine = models.TextField()
-    usage = models.TextField()
-    natural_source = models.TextField()
-    photo = models.ImageField(upload_to='herbs/', null=True, blank=True, help_text="Photo of the medical herb")
+    character = models.TextField(blank=True)
+    living_specification = models.TextField(blank=True)
+    chemical_composition = models.TextField(blank=True)
+    raw_material_for_medicine = models.TextField(blank=True)
+    usage = models.TextField(blank=True)
+    natural_source = models.TextField(blank=True)
+    photo = AdvanceThumbnailField(upload_to='herbs/', null=True, blank=True, help_text="Photo of the medical herb")
     
     def __str__(self):
         return self.name

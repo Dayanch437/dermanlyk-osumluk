@@ -14,8 +14,12 @@ class MedicalHerbSerializer(serializers.ModelSerializer):
     def get_photo_url(self, obj):
         if obj.photo:
             request = self.context.get('request')
+            # Generate URL for large size image (l/herbs/image_name)
+            photo_path = str(obj.photo)
+            large_photo_path = f"l/{photo_path}"
+            
             if request:
-                return request.build_absolute_uri(obj.photo.url)
-            return obj.photo.url
+                return request.build_absolute_uri(f"{settings.MEDIA_URL}{large_photo_path}")
+            return f"{settings.MEDIA_URL}{large_photo_path}"
         return None
 
