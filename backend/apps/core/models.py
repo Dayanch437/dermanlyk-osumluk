@@ -1,6 +1,6 @@
 from django.db import models
 from .fields import AdvanceThumbnailField
-
+from ckeditor.fields import RichTextField
 class TimeStampedModel(models.Model):
     """
     Abstract model that provides self-updating 'created_at' and 'updated_at' fields
@@ -46,12 +46,8 @@ class BaseModel(TimeStampedModel, SoftDeleteModel):
 
 class MedicalHerb(BaseModel):
     name = models.CharField(max_length=100)
-    character = models.TextField(blank=True)
-    living_specification = models.TextField(blank=True)
-    chemical_composition = models.TextField(blank=True)
-    raw_material_for_medicine = models.TextField(blank=True)
-    usage = models.TextField(blank=True)
-    natural_source = models.TextField(blank=True)
+    name_latin = models.CharField(max_length=150, blank=True)
+    content = RichTextField(blank=True)
     photo = AdvanceThumbnailField(upload_to='herbs/', null=True, blank=True, help_text="Photo of the medical herb")
     
     def __str__(self):

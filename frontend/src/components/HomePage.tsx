@@ -38,6 +38,7 @@ const { Title, Text, Paragraph } = Typography;
 interface Osumlik {
   id: string | number;
   name: string;
+  name_latin?: string;
   character: string;
   living_specification: string;
   natural_source: string;
@@ -74,8 +75,19 @@ const HomePage: React.FC = () => {
   const [herbs, setHerbs] = useState<Osumlik[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const pageSize = 50; // Show 50 items per page
   const navigate = useNavigate();
+
+  // Handle window resize for responsive design
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Function to fetch herbs data
   const fetchHerbs = async () => {
@@ -91,6 +103,7 @@ const HomePage: React.FC = () => {
         const mappedHerb = {
           id: herb.id,
           name: herb.name,
+          name_latin: herb.name_latin || '',
           character: herb.character || '',
           living_specification: herb.living_specification || '',
           natural_source: herb.natural_source || '',
@@ -307,30 +320,46 @@ const HomePage: React.FC = () => {
       {/* Professional Header */}
       <Header style={{ 
         background: 'linear-gradient(135deg, #2c5530 0%, #3d7c47 100%)',
-        padding: '0 50px',
+        padding: '0 20px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         position: 'sticky',
         top: 0,
         zIndex: 1000
       }}>
         <Row justify="space-between" align="middle">
-          <Col>
+          <Col xs={18} sm={12} md={8}>
             <Space align="center">
               <MedicineBoxOutlined style={{ fontSize: '24px', color: 'white' }} />
-              <Title level={3} style={{ color: 'white', margin: 0 }}>
+              <Title level={3} style={{ 
+                color: 'white', 
+                margin: 0,
+                fontSize: 'clamp(16px, 2.5vw, 24px)'
+              }}>
                 Dermanlyk Ösümlikleri
               </Title>
             </Space>
           </Col>
-          <Col>
-            <Space>
-              <Button type="link" icon={<HomeOutlined />} style={{ color: 'white' }}>
+          <Col xs={6} sm={12} md={16}>
+            <Space style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button 
+                type="link" 
+                icon={<HomeOutlined />} 
+                style={{ color: 'white', display: isMobile ? 'none' : 'inline-flex' }}
+              >
                 Baş sahypa
               </Button>
-              <Button type="link" icon={<BookOutlined />} style={{ color: 'white' }}>
+              <Button 
+                type="link" 
+                icon={<BookOutlined />} 
+                style={{ color: 'white', display: isMobile ? 'none' : 'inline-flex' }}
+              >
                 Kitaphana
               </Button>
-              <Button type="link" icon={<HeartOutlined />} style={{ color: 'white' }}>
+              <Button 
+                type="link" 
+                icon={<HeartOutlined />} 
+                style={{ color: 'white', display: isMobile ? 'none' : 'inline-flex' }}
+              >
                 Halanýanlar
               </Button>
             </Space>
@@ -342,15 +371,15 @@ const HomePage: React.FC = () => {
         {/* Hero Section */}
         <div style={{ 
           background: 'linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%)',
-          padding: '80px 50px',
+          padding: '60px 20px',
           textAlign: 'center'
         }}>
           <Row justify="center">
-            <Col xs={24} sm={20} md={16} lg={14}>
+            <Col xs={24} sm={22} md={20} lg={16} xl={14}>
               <Space direction="vertical" size="large" style={{ width: '100%' }}>
                 <div>
                   <Title level={1} style={{ 
-                    fontSize: '3rem', 
+                    fontSize: 'clamp(2rem, 5vw, 3rem)', 
                     background: 'linear-gradient(135deg, #2c5530, #3d7c47)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
@@ -358,14 +387,19 @@ const HomePage: React.FC = () => {
                   }}>
                     Dermanlyk Ösümlikleri
                   </Title>
-                  <Title level={3} style={{ color: '#5a7c65', fontWeight: 400 }}>
+                  <Title level={3} style={{ 
+                    color: '#5a7c65', 
+                    fontWeight: 400,
+                    fontSize: 'clamp(1.2rem, 3vw, 1.5rem)'
+                  }}>
                     Türkmenistanyň Tebigy Hasabaty
                   </Title>
                   <Paragraph style={{ 
-                    fontSize: '18px', 
+                    fontSize: 'clamp(14px, 2.5vw, 18px)', 
                     color: '#666',
                     maxWidth: '600px',
-                    margin: '0 auto 40px'
+                    margin: '0 auto 40px',
+                    lineHeight: '1.6'
                   }}>
                     Türkmenistanyň baý tebigat dünýäsindäki dermanlyk ösümlikleriň häsiýetleri, 
                     ýaşaýyş aýratynlyklary we peýdaly täsirleri barada giňişleýin maglumat
@@ -379,35 +413,45 @@ const HomePage: React.FC = () => {
                   border: 'none'
                 }}>
                   <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-                    <AutoComplete
-                      style={{ width: '100%' }}
-                      size="large"
-                      value={searchTerm}
-                      options={suggestions}
-                      onSearch={handleInputChange}
-                      onSelect={(value) => {
-                        // Navigate directly to detail page using the plant ID
-                        navigate(`/osumlik/${value}`);
-                      }}
-                      placeholder="Ösümliginiň adyny ýazyň..."
-                      allowClear
-                      suffixIcon={
+                    <Row gutter={[8, 8]} align="middle">
+                      <Col flex="auto">
+                        <AutoComplete
+                          className="responsive-search"
+                          style={{ width: '100%' }}
+                          size={isMobile ? "middle" : "large"}
+                          value={searchTerm}
+                          options={suggestions}
+                          onSearch={handleInputChange}
+                          onSelect={(value) => {
+                            // Navigate directly to detail page using the plant ID
+                            navigate(`/osumlik/${value}`);
+                          }}
+                          placeholder={isMobile ? "Ösümlik gözle..." : "Ösümliginiň adyny ýazyň..."}
+                          allowClear
+                        />
+                      </Col>
+                      <Col flex="none">
                         <Button 
                           type="primary" 
                           icon={<SearchOutlined />}
                           loading={loading}
                           onClick={() => handleSearch(searchTerm)}
+                          size={isMobile ? "middle" : "large"}
                           style={{
                             background: '#2c5530',
                             border: 'none',
                             borderRadius: '8px',
-                            boxShadow: '0 2px 6px rgba(44, 85, 48, 0.2)'
+                            boxShadow: '0 2px 6px rgba(44, 85, 48, 0.2)',
+                            minWidth: isMobile ? '50px' : 'auto',
+                            padding: isMobile ? '0 12px' : '0 24px',
+                            fontSize: isMobile ? '14px' : '16px',
+                            height: isMobile ? '40px' : '50px'
                           }}
                         >
-                          GÖZLE
+                          {!isMobile ? 'GÖZLE' : ''}
                         </Button>
-                      }
-                    />
+                      </Col>
+                    </Row>
                   </Space>
                 </Card>
               </Space>
@@ -416,9 +460,9 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Content Section */}
-        <div style={{ padding: '50px' }}>
+        <div style={{ padding: '20px 15px 50px' }}>
           <Row justify="center">
-            <Col xs={24} sm={22} md={20} lg={18}>
+            <Col xs={24} sm={22} md={20} lg={18} xl={16}>
               
         
               

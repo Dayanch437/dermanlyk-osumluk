@@ -29,6 +29,7 @@ const { Title, Text, Paragraph } = Typography;
 interface OsumlukMaglumaty {
   id: string;
   ady: string;
+  name_latin: string;
   hasiyeti: string;
   yasayys_ayratynlygy: string;
   yayraway: string;
@@ -36,6 +37,7 @@ interface OsumlukMaglumaty {
   gory: string;
   cig_maly: string;
   himiki_duzumi: string;
+  content: string;
   peydaly_nys: string;
   suraty: string;
   photo?: string; // New field for backend photo URL (relative path)
@@ -58,6 +60,7 @@ const WordDetailPage: React.FC = () => {
     '1': {
       id: '1',
       ady: 'Alma',
+      name_latin: 'Malus domestica',
       hasiyeti: 'Witaminlara baý, aşgazan-içege peýdaly',
       yasayys_ayratynlygy: 'Temperaturaly klimatda öser, ýylyň dowamynda 15-25°C temperatury halaýar',
       yayraway: 'Günorta Aziýa, häzirki döwürde bütin dünýäde ösdürilýär',
@@ -65,6 +68,7 @@ const WordDetailPage: React.FC = () => {
       gory: 'Malus domestica',
       cig_maly: 'Alma şiresi, gabygy, tohumy, ýapraky',
       himiki_duzumi: 'Witamin C (4-10 mg/100g), Fiber (2.4g/100g), Potassium (107mg/100g), Antiosidantlar',
+      content: 'Alma dünýäde iň giňden ýaýran we peýdaly miwelerden biridir. Ol witaminlara baý bolup, aşgazan-içege ulgamyny gowulaşdyrýar. Almanyň düzüminde pes kaloriý bar we organiki kislotalar bolup, saglyga örän peýdalydyr.',
       peydaly_nys: 'Holesterini peseldýär, sakarnyn derejesini kadalaşdyrýar, aşgazanyň işini gowulaşdyrýar',
       suraty: '/images/alma.jpg',
       kategoriýa: 'Miweli ösümlik',
@@ -83,6 +87,7 @@ const WordDetailPage: React.FC = () => {
     '2': {
       id: '2',
       ady: 'Sarymsaküs',
+      name_latin: 'Allium sativum',
       hasiyeti: 'Antibakterial, antiwiral, immuniteti güýçlendiriji',
       yasayys_ayratynlygy: 'Gury, yssy klimatda öser, sowuk şertlere çydaýar',
       yayraway: 'Orta Aziýa, Günbatar Aziýa',
@@ -90,6 +95,7 @@ const WordDetailPage: React.FC = () => {
       gory: 'Allium sativum',
       cig_maly: 'Baş (gözler), ýapraklar',
       himiki_duzumi: 'Allicin, Sulfur birleşmeleri, Witamin C, Mangan, Selen',
+      content: 'Sarymsaküs köne zamanlardan bäri dermanlyk ösümlik hökmünde ulanylýar. Ol güýçli antibakterial we antiwiral häsiýetlere eýedir. Sarymsaküs immuniteti güýçlendirip, köp sanly kesellerden goraýar.',
       peydaly_nys: 'Wirusa we bakteriýa garşy göreş, gan basyşyny kadalaşdyrýar, holesterini azaldýar',
       suraty: '/images/sarymsakus.jpg',
       kategoriýa: 'Dermanlyk ösümlik',
@@ -108,6 +114,7 @@ const WordDetailPage: React.FC = () => {
     '3': {
       id: '3',
       ady: 'Aýdogan',
+      name_latin: 'Lavandula angustifolia',
       hasiyeti: 'Ýatlaýjy, rahatlendiriji, antiseptik täsirli',
       yasayys_ayratynlygy: 'Dagly sebitlerde, gury toprakda öser',
       yayraway: 'Merkezi Aziýa, Günbatar Aziýa, Ýewropa',
@@ -115,6 +122,7 @@ const WordDetailPage: React.FC = () => {
       gory: 'Lavandula angustifolia',
       cig_maly: 'Güller, ýapraklar, baldaklar',
       himiki_duzumi: 'Efirnë ýagy (1-3%), Linalool, Kamfor, Tannin',
+      content: 'Aýdogan ýatyryjy we rahatlendiriji täsir edýän ösümlikdir. Ol stressi azaldyp, ukynyň hilini gowulaşdyrýar. Aýdoganyň hoşboý ysy asab ulgamyny köşeşdirýär we ruhy sag-salamatyň dikeltmegine kömek edýär.',
       peydaly_nys: 'Stressi azaldýar, ukynyň hili gowulaşdyrýar, ýara bejeriji',
       suraty: '/images/aydogan.jpg',
       kategoriýa: 'Aromaterapi ösümlik',
@@ -133,6 +141,7 @@ const WordDetailPage: React.FC = () => {
     '4': {
       id: '4',
       ady: 'Narpyz',
+      name_latin: 'Mentha piperita',
       hasiyeti: 'Soý degişli kesellere garşy täsirli, aşgazana peýdaly',
       yasayys_ayratynlygy: 'Nemli ýerlerde öser, çalt köpelýär',
       yayraway: 'Ýewropa we Aziýa',
@@ -140,6 +149,7 @@ const WordDetailPage: React.FC = () => {
       gory: 'Mentha piperita',
       cig_maly: 'Ýapraklar, baldaklar',
       himiki_duzumi: 'Mentol (30-50%), Efirnë ýagy, Tannin',
+      content: 'Narpyz dermanlyk ösümliklerden iň peýdalylaryndan biridir. Ol aşgazan problemalaryny çözmekde we dem alyş ýollaryny arassalamakda giňden ulanylýar. Narpazyň mentol düzümi sowagtyryjy we antiseptik täsir edýär.',
       peydaly_nys: 'Aşgazan agyrysyny azaldýar, dem alyşy ýeňilleşdirýär, baş agyrysyny geçirýär',
       suraty: '/images/narpyz.jpg',
       kategoriýa: 'Dermanlyk ösümlik',
@@ -158,6 +168,7 @@ const WordDetailPage: React.FC = () => {
     '7': {
       id: '7',
       ady: 'Çaý',
+      name_latin: 'Camellia sinensis',
       hasiyeti: 'Antioksidant, tonus beriji, akyly güýçlendiriji',
       yasayys_ayratynlygy: 'Ýylylyk we çyglylygy halaýar, daglyk ýerlerde öser',
       yayraway: 'Günorta-Gündogar Aziýa (Hytaý, Hindistan)',
@@ -165,6 +176,7 @@ const WordDetailPage: React.FC = () => {
       gory: 'Camellia sinensis',
       cig_maly: 'Ýaşyl ýapraklar, pägimler',
       himiki_duzumi: 'Kofein (2-4%), Tannin, L-theanin, Katehiner',
+      content: 'Çaý dünýäde iň köp içilýän içgilerden biridir we müňýyllyklardyr ulanylýar. Ol güýçli antioksidant häsiýetlere eýedir we akylyň işini gowulaşdyrýar. Çaýda bolýan L-theanin amino kislotasy stressi azaldyp, pikiri düzgünleşdirýär.',
       peydaly_nys: 'Akylyň işini gowulaşdyrýar, ýadaşy güýçlendirýär, antioksidant täsir',
       suraty: '/images/cay.jpg',
       kategoriýa: 'Dermanlyk ösümlik',
@@ -183,6 +195,7 @@ const WordDetailPage: React.FC = () => {
     '8': {
       id: '8',
       ady: 'Limon',
+      name_latin: 'Citrus limon',
       hasiyeti: 'Witamin C-iň baý çeşmesi, immunitet güýçlendiriji',
       yasayys_ayratynlygy: 'Subtropiki klimatda öser, doňa çydamaýar',
       yayraway: 'Günorta Aziýa, häzir bütin subtropiklerde ösdürilýär',
@@ -190,6 +203,7 @@ const WordDetailPage: React.FC = () => {
       gory: 'Citrus limon',
       cig_maly: 'Miwe, gabygy, ýapraky, gül',
       himiki_duzumi: 'Witamin C (50mg/100g), Limon kislotasy, Efirnë ýagy, Flavonoidler',
+      content: 'Limon witamin C-iň iň baý çeşmelerinden biri bolup, immunitet ulgamyny güýçlendirmekde möhüm rol oýnaýar. Ol detoksifikasiýa proseslerini goldaýar we organizma zyýanly maddalardan arassalanmagyna kömek edýär.',
       peydaly_nys: 'Sowuklyga garşy söweş, detoksifikasiýa, immunitet ýokarlandyryş',
       suraty: '/images/limon.jpg',
       kategoriýa: 'Miweli ösümlik',
@@ -220,8 +234,9 @@ const WordDetailPage: React.FC = () => {
         
         // Map API response to OsumlukMaglumaty structure
         const maglumat: OsumlukMaglumaty = {
-          id: apiData.id,
-          ady: apiData.word || apiData.name,
+          id: apiData.id.toString(), // Convert number to string for local interface
+          ady: apiData.name, // Use the standardized name field
+          name_latin: apiData.name_latin || '', // Latin name from API
           hasiyeti: apiData.character || '',
           yasayys_ayratynlygy: apiData.living_specification || '',
           yayraway: apiData.natural_source || '',
@@ -229,9 +244,10 @@ const WordDetailPage: React.FC = () => {
           gory: 'Camellia sinensis', // Default genus for now
           cig_maly: apiData.raw_material_for_medicine || '',
           himiki_duzumi: apiData.chemical_composition || '',
+          content: apiData.content || 'Mazmuny ýok', // Use direct content field
           peydaly_nys: apiData.usage || '',
           suraty: '🌿', // Default emoji
-          photo: apiData.photo || '', // New photo field from API
+          photo: apiData.photo || '', // Photo path from API
           photo_url: apiData.photo_url || '', // Full URL to the photo
           kategoriýa: 'Dermanlyk ösümlik',
           goşmaça_maglumat: ['Dermanlyk ösümlikleriň katalogyndan maglumat'],
@@ -317,16 +333,21 @@ const WordDetailPage: React.FC = () => {
       <Header style={{ 
         background: '#2d5016', 
         borderBottom: '3px solid #2d5016',
-        padding: '0 50px'
+        padding: '0 20px'
       }}>
         <Row justify="space-between" align="middle" style={{ height: '100%' }}>
-          <Col>
+          <Col xs={12} sm={16} md={18}>
             <Space align="center">
               <Button 
                 type="text" 
                 icon={<ArrowLeftOutlined />} 
                 onClick={handleBack}
-                style={{ color: 'white', border: 'none', fontFamily: 'serif' }}
+                style={{ 
+                  color: 'white', 
+                  border: 'none', 
+                  fontFamily: 'serif',
+                  fontSize: 'clamp(12px, 2vw, 16px)'
+                }}
               >
                 Gözlege gaýt
               </Button>
@@ -335,17 +356,15 @@ const WordDetailPage: React.FC = () => {
           <Col>
             <Space align="center">
               <EnvironmentOutlined style={{ fontSize: '20px', color: 'white' }} />
-              <Title level={4} style={{ color: 'white', margin: 0, fontFamily: 'serif' }}>
-                Dermanlyk Ösümlikleri
-              </Title>
+          
             </Space>
           </Col>
         </Row>
       </Header>
 
-      <Content style={{ padding: '50px', flex: 1 }}>
+      <Content style={{ padding: '20px 15px', flex: 1 }}>
         <Row justify="center">
-          <Col xs={24} sm={22} md={20} lg={16} xl={14}>
+          <Col xs={24} sm={22} md={20} lg={18} xl={16}>
             <Card
               style={{
                 background: 'rgba(255, 255, 255, 0.95)',
@@ -357,13 +376,13 @@ const WordDetailPage: React.FC = () => {
               }}
             >
               {/* Ösümligiň surat we ady */}
-              <div style={{ padding: '40px 40px 20px' }}>
+              <div style={{ padding: 'clamp(20px, 4vw, 40px) clamp(15px, 4vw, 40px) 20px' }}>
                 <Row gutter={[24, 24]} align="top">
-                  <Col xs={24} md={8}>
+                  <Col xs={24} sm={24} md={8} lg={8}>
                     {(osumlukMaglumaty.photo_url || osumlukMaglumaty.photo) ? (
                       <div style={{
                         width: '100%',
-                        height: '200px',
+                        height: 'clamp(150px, 25vw, 200px)',
                         borderRadius: '16px',
                         overflow: 'hidden',
                         marginBottom: '20px'
@@ -389,14 +408,14 @@ const WordDetailPage: React.FC = () => {
                     ) : (
                       <div style={{
                         width: '100%',
-                        height: '200px',
+                        height: 'clamp(150px, 25vw, 200px)',
                         borderRadius: '16px',
                         background: 'linear-gradient(45deg, #2d5016, #4a7c3a)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: 'white',
-                        fontSize: '48px',
+                        fontSize: 'clamp(24px, 8vw, 48px)',
                         fontWeight: 'bold',
                         fontFamily: 'serif',
                         marginBottom: '20px'
@@ -405,155 +424,45 @@ const WordDetailPage: React.FC = () => {
                       </div>
                     )}
                   </Col>
-                  <Col xs={24} md={16}>
+                  <Col xs={24} sm={24} md={16} lg={16}>
                     <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                      <Title level={1} style={{ margin: 0, color: '#2d5016', fontSize: '3rem', fontFamily: 'serif' }}>
-                        {osumlukMaglumaty.ady}
+                      <Title level={1} style={{ 
+                        margin: 0, 
+                        color: '#2d5016', 
+                        fontSize: 'clamp(1.5rem, 4vw, 3rem)', 
+                        fontFamily: 'serif',
+                        textAlign: window.innerWidth < 768 ? 'center' : 'left'
+                      }}>
+                        {osumlukMaglumaty.ady} <br />
+                        {osumlukMaglumaty.name_latin}
                       </Title>
                       <Space size="small">
                         <Tag color={getKategoriýaColor(osumlukMaglumaty.kategoriýa)} style={{ fontSize: '14px', padding: '4px 12px', fontFamily: 'serif' }}>
                           {osumlukMaglumaty.kategoriýa}
                         </Tag>
                       </Space>
-                      <Text style={{ fontSize: '16px', color: '#666', fontStyle: 'italic', fontFamily: 'serif' }}>
-                        <strong>Ylmy ady:</strong> {osumlukMaglumaty.gory}
-                      </Text>
+                   
                     </Space>
                   </Col>
                 </Row>
               </div>
 
-              <Divider style={{ margin: '0 40px 30px' }} />
+              <Divider style={{ margin: '0 clamp(15px, 4vw, 40px) 30px' }} />
 
-              {/* Häsiýeti */}
-              <div style={{ padding: '0 40px 30px' }}>
-                <Title level={3} style={{ color: '#2d5016', marginBottom: '15px', fontFamily: 'serif' }}>
-                  <MedicineBoxOutlined style={{ marginRight: '8px' }} />
-                  Häsiýeti
-                </Title>
-                <Paragraph style={{ fontSize: '18px', lineHeight: '1.6', color: '#444', fontFamily: 'serif' }}>
-                  {osumlukMaglumaty.hasiyeti}
-                </Paragraph>
+              {/* Content */}
+              <div style={{ padding: '0 clamp(15px, 4vw, 40px) clamp(20px, 4vw, 40px)' }}>
+                <div 
+                  className="herb-content"
+                  style={{ 
+                    fontSize: 'clamp(14px, 2.5vw, 16px)', 
+                    lineHeight: '1.8', 
+                    color: '#444', 
+                    fontFamily: 'serif' 
+                  }}
+                  dangerouslySetInnerHTML={{ __html: osumlukMaglumaty.content }}
+                />
               </div>
 
-              {/* Ýaşaýyş aýratynlygy */}
-              <div style={{ padding: '0 40px 30px' }}>
-                <Title level={3} style={{ color: '#2d5016', marginBottom: '15px', fontFamily: 'serif' }}>
-                  <EnvironmentOutlined style={{ marginRight: '8px' }} />
-                  Ýaşaýyş Aýratynlygy
-                </Title>
-                <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', color: '#666', fontFamily: 'serif' }}>
-                  {osumlukMaglumaty.yasayys_ayratynlygy}
-                </Paragraph>
-              </div>
-
-              {/* Himiki düzümi */}
-              <div style={{ padding: '0 40px 30px' }}>
-                <Title level={3} style={{ color: '#2d5016', marginBottom: '15px', fontFamily: 'serif' }}>
-                  <ExperimentOutlined style={{ marginRight: '8px' }} />
-                  Himiki Düzümi
-                </Title>
-                <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', color: '#444', fontFamily: 'serif' }}>
-                  {osumlukMaglumaty.himiki_duzumi}
-                </Paragraph>
-              </div>
-
-              {/* Peýdaly täsiri */}
-              <div style={{ padding: '0 40px 30px' }}>
-                <Title level={3} style={{ color: '#2d5016', marginBottom: '15px', fontFamily: 'serif' }}>
-                  <InfoCircleOutlined style={{ marginRight: '8px' }} />
-                  Peýdaly Täsiri
-                </Title>
-                <Paragraph style={{ fontSize: '16px', lineHeight: '1.6', color: '#444', fontFamily: 'serif' }}>
-                  {osumlukMaglumaty.peydaly_nys}
-                </Paragraph>
-              </div>
-
-              {/* Goşmaça maglumatlar */}
-              {osumlukMaglumaty.goşmaça_maglumat && osumlukMaglumaty.goşmaça_maglumat.length > 0 && (
-                <div style={{ padding: '0 40px 30px' }}>
-                  <Title level={3} style={{ color: '#2d5016', marginBottom: '15px', fontFamily: 'serif' }}>
-                    Goşmaça Maglumatlar
-                  </Title>
-                  <List
-                    dataSource={osumlukMaglumaty.goşmaça_maglumat}
-                    renderItem={(maglumat, index) => (
-                      <List.Item style={{ borderBottom: 'none', padding: '8px 0' }}>
-                        <Space align="start">
-                          <Text style={{ 
-                            background: '#2d5016', 
-                            color: 'white', 
-                            borderRadius: '50%',
-                            width: '24px',
-                            height: '24px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '12px',
-                            fontWeight: 'bold'
-                          }}>
-                            {index + 1}
-                          </Text>
-                          <Text style={{ fontSize: '16px', lineHeight: '1.6', fontFamily: 'serif' }}>
-                            {maglumat}
-                          </Text>
-                        </Space>
-                      </List.Item>
-                    )}
-                  />
-                </div>
-              )}
-
-              {/* Ulanýyş usuly */}
-              {osumlukMaglumaty.peýdanyş_usuly && osumlukMaglumaty.peýdanyş_usuly.length > 0 && (
-                <div style={{ padding: '0 40px 30px' }}>
-                  <Card 
-                    size="small" 
-                    title="Ulanýyş Usuly" 
-                    style={{ 
-                      background: '#f0f9ff',
-                      border: '2px solid #2d5016',
-                      fontFamily: 'serif'
-                    }}
-                  >
-                    <List
-                      dataSource={osumlukMaglumaty.peýdanyş_usuly}
-                      renderItem={(usul, index) => (
-                        <List.Item style={{ borderBottom: 'none', padding: '4px 0' }}>
-                          <Text style={{ fontFamily: 'serif' }}>• {usul}</Text>
-                        </List.Item>
-                      )}
-                    />
-                  </Card>
-                </div>
-              )}
-
-              {/* Duýduryş */}
-              {osumlukMaglumaty.duýduryş && (
-                <div style={{ padding: '0 40px 40px' }}>
-                  <Alert
-                    message="Duýduryş"
-                    description={osumlukMaglumaty.duýduryş}
-                    type="warning"
-                    showIcon
-                    style={{ fontFamily: 'serif' }}
-                  />
-                </div>
-              )}
-
-              {/* Maglumaty */}
-              <Row gutter={[24, 24]} style={{ padding: '0 40px 40px' }}>
-                <Col xs={24} md={12}>
-                  <Card size="small" title="Ýaýrawy" style={{ background: '#f6ffed', border: '1px solid #b7eb8f', fontFamily: 'serif' }}>
-                    <Text style={{ fontFamily: 'serif' }}>{osumlukMaglumaty.yayraway}</Text>
-                  </Card>
-                </Col>
-                <Col xs={24} md={12}>
-                  <Card size="small" title="Tegigy" style={{ background: '#fff2f0', border: '1px solid #ffccc7', fontFamily: 'serif' }}>
-                    <Text style={{ fontFamily: 'serif' }}>{osumlukMaglumaty.tegigy}</Text>
-                  </Card>
-                </Col>
-              </Row>
             </Card>
           </Col>
         </Row>

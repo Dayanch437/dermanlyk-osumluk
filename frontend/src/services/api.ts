@@ -3,7 +3,7 @@ import { WordSearchResponse, WordDetail, SearchFilters } from '../types';
 
 // Configure axios instance
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1',
+  baseURL: process.env.REACT_APP_API_BASE_URL || 'http://192.168.0.109:8000/api/v1',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

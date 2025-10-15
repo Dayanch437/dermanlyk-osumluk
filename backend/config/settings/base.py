@@ -21,6 +21,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 THIRD_PARTY_APPS = [
@@ -28,7 +29,12 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'django_filters',
     'drf_spectacular',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
 
 LOCAL_APPS = [
     'apps.core',

@@ -44,9 +44,8 @@ class MedicalHerbViewSet(viewsets.ReadOnlyModelViewSet):
 		# Then look for other fields matches
 		other_matches = list(self.queryset.filter(
 			Q(name__icontains=q) |
-			Q(character__icontains=q) |
-			Q(usage__icontains=q) |
-			Q(natural_source__icontains=q)
+			Q(name_latin__icontains=q) |
+			Q(content__icontains=q)
 		).exclude(
 			Q(name__iexact=q) | 
 			Q(name__istartswith=q)

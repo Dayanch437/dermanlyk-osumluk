@@ -1,32 +1,30 @@
 // API Response Types
 export interface WordSearchResponse {
-  results: Word[];
   count: number;
-  page: number;
-  pages: number;
-  links?: {
-    next: string | null;
-    previous: string | null;
-  };
+  next: string | null;
+  previous: string | null;
+  results: Word[];
 }
 
 export interface Word {
-  id: string;
+  id: number;
+  photo_url: string;
+  created_at: string;
+  updated_at: string;
+  is_deleted: boolean;
+  deleted_at: string | null;
   name: string;
+  name_latin: string;
+  content: string;
+  photo: string;
+  
+  // Legacy field mapping for backwards compatibility
   character?: string;
   living_specification?: string;
   natural_source?: string;
   usage?: string;
   chemical_composition?: string;
   raw_material_for_medicine?: string;
-  created_at?: string;
-  updated_at?: string;
-  is_deleted?: boolean;
-  deleted_at?: string | null;
-  photo?: string;  // Relative path to photo
-  photo_url?: string;  // Full URL to photo
-  
-  // Legacy field mapping
   word?: string;
   definition?: string;
   partOfSpeech?: string;

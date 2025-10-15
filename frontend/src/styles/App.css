@@ -62,6 +62,97 @@ code {
   width: 100% !important;
 }
 
+/* Responsive search input styling */
+.responsive-search .ant-input {
+  height: 50px !important;
+  font-size: 16px !important;
+  border-radius: 8px !important;
+  font-family: serif !important;
+  border: 2px solid #2d5016 !important;
+  padding: 12px 16px !important;
+}
+
+.responsive-search .ant-select-selector {
+  height: 50px !important;
+  border-radius: 8px !important;
+  border: 2px solid #2d5016 !important;
+}
+
+.responsive-search .ant-select-selection-search-input {
+  height: 46px !important;
+  font-size: 16px !important;
+  font-family: serif !important;
+}
+
+/* Mobile responsive search */
+@media (max-width: 768px) {
+  .responsive-search .ant-input {
+    height: 40px !important;
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+  }
+  
+  .responsive-search .ant-select-selector {
+    height: 40px !important;
+  }
+  
+  .responsive-search .ant-select-selection-search-input {
+    height: 36px !important;
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .responsive-search .ant-input {
+    height: 38px !important;
+    font-size: 13px !important;
+    padding: 8px 12px !important;
+  }
+  
+  .responsive-search .ant-select-selector {
+    height: 38px !important;
+  }
+  
+  .responsive-search .ant-select-selection-search-input {
+    height: 34px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* HTML content styling for herb details */
+.herb-content p {
+  margin-bottom: 16px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.herb-content strong {
+  color: #2d5016;
+  font-weight: 600;
+}
+
+.herb-content br {
+  line-height: 2;
+}
+
+/* Responsive design for herb content */
+@media (max-width: 768px) {
+  .herb-content {
+    font-size: 14px !important;
+  }
+  
+  .herb-content p {
+    margin-bottom: 12px;
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .herb-content {
+    font-size: 13px !important;
+  }
+}
+
 .ant-input-search .ant-input {
   height: 60px !important;
   font-size: 18px !important;
