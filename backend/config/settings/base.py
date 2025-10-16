@@ -31,6 +31,7 @@ THIRD_PARTY_APPS = [
     'drf_spectacular',
     'ckeditor',
     'ckeditor_uploader',
+    'import_export',
 ]
 
 
