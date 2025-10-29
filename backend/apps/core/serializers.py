@@ -19,8 +19,8 @@ class MedicalHerbSerializer(serializers.ModelSerializer):
             large_photo_path = f"l/{photo_path}"
             
             if request:
-               return f"http://72.56.70.84:9090{settings.MEDIA_URL}{large_photo_path}"
-            return f"http://72.56.70.84:9090{settings.MEDIA_URL}{large_photo_path}"
+               return f"http://90.156.209.181{settings.MEDIA_URL}{large_photo_path}"
+            return f"http://90.156.209.181{settings.MEDIA_URL}{large_photo_path}"
 
         return None
 
