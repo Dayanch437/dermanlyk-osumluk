@@ -14,6 +14,7 @@ import {
   AutoComplete,
   Divider,
   Avatar,
+  Carousel,
 } from 'antd';
 import api, { wordService } from '../services/api';
 import { 
@@ -128,7 +129,7 @@ const HomePage: React.FC = () => {
           himiki_duzumi: herb.chemical_composition || 'Mälim däl',
           peydaly_nys: herb.usage || 'Mälim däl',
           suraty: '🌿', // Default plant emoji
-          kategoriýa: 'Derman ösümligi'
+          kategoriýa: 'Tükmenistanyň Derman ösümligi'
         };
         return mappedHerb;
       });
@@ -316,288 +317,221 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      {/* Professional Header */}
+    <Layout style={{ minHeight: '100vh', background: '#f8faf9' }}>
+      {/* Modern Professional Header */}
       <Header style={{ 
-        background: 'linear-gradient(135deg, #2c5530 0%, #3d7c47 100%)',
-        padding: '0 20px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        background: '#ffffff',
+        padding: '0 50px',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
         position: 'sticky',
         top: 0,
-        zIndex: 1000
+        zIndex: 1000,
+        borderBottom: '1px solid #e8e8e8'
       }}>
-        <Row justify="space-between" align="middle">
-          <Col xs={18} sm={12} md={8}>
-            <Space align="center">
-              <MedicineBoxOutlined style={{ fontSize: '24px', color: 'white' }} />
-              <Title level={3} style={{ 
-                color: 'white', 
-                margin: 0,
-                fontSize: 'clamp(16px, 2.5vw, 24px)'
+        <Row justify="space-between" align="middle" style={{ height: '64px' }}>
+          <Col xs={24} sm={12} md={10}>
+            <Space align="center" size="middle">
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(82, 196, 26, 0.3)'
               }}>
-                Dermanlyk Ösümlikleri
-              </Title>
-            </Space>
-          </Col>
-          <Col xs={6} sm={12} md={16}>
-            <Space style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button 
-                type="link" 
-                icon={<HomeOutlined />} 
-                style={{ color: 'white', display: isMobile ? 'none' : 'inline-flex' }}
-              >
-                Baş sahypa
-              </Button>
-              <Button 
-                type="link" 
-                icon={<BookOutlined />} 
-                style={{ color: 'white', display: isMobile ? 'none' : 'inline-flex' }}
-              >
-                Kitaphana
-              </Button>
-              <Button 
-                type="link" 
-                icon={<HeartOutlined />} 
-                style={{ color: 'white', display: isMobile ? 'none' : 'inline-flex' }}
-              >
-                Halanýanlar
-              </Button>
+                <MedicineBoxOutlined style={{ fontSize: '22px', color: 'white' }} />
+              </div>
+              <div>
+                <Title level={4} style={{ 
+                  margin: 0,
+                  fontSize: isMobile ? '16px' : '20px',
+                  fontWeight: 600,
+                  color: '#2c5530',
+                  letterSpacing: '-0.5px'
+                }}>
+                 Türkmenistanyň Dermanlyk Ösümlikleri
+                </Title>
+                <Text type="secondary" style={{ fontSize: '12px', display: isMobile ? 'none' : 'block' }}>
+                  Türkmenistan tebigy hasabaty
+                </Text>
+              </div>
             </Space>
           </Col>
         </Row>
       </Header>
       
-      <Content style={{ padding: '0' }}>
-        {/* Hero Section */}
+      <Content style={{ padding: '0', background: '#f8faf9' }}>
+        {/* Hero Slider Section */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%)',
-          padding: '60px 20px',
-          textAlign: 'center'
+          background: '#ffffff',
+          marginBottom: '0',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          padding: isMobile ? '20px 15px' : '40px 50px'
         }}>
           <Row justify="center">
-            <Col xs={24} sm={22} md={20} lg={16} xl={14}>
-              <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            <Col xs={24} sm={22} md={20} lg={18} xl={16}>
+              <Carousel 
+                autoplay 
+                autoplaySpeed={5000} 
+                effect="fade"
+                dots={{ className: 'custom-carousel-dots' }}
+              >
                 <div>
-                  <Title level={1} style={{ 
-                    fontSize: 'clamp(2rem, 5vw, 3rem)', 
-                    background: 'linear-gradient(135deg, #2c5530, #3d7c47)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    marginBottom: '16px'
-                  }}>
-                    Dermanlyk Ösümlikleri
-                  </Title>
-                  <Title level={3} style={{ 
-                    color: '#5a7c65', 
-                    fontWeight: 400,
-                    fontSize: 'clamp(1.2rem, 3vw, 1.5rem)'
-                  }}>
-                    Türkmenistanyň Tebigy Hasabaty
-                  </Title>
-                  <Paragraph style={{ 
-                    fontSize: 'clamp(14px, 2.5vw, 18px)', 
-                    color: '#666',
-                    maxWidth: '600px',
-                    margin: '0 auto 40px',
-                    lineHeight: '1.6'
-                  }}>
-                    Türkmenistanyň baý tebigat dünýäsindäki dermanlyk ösümlikleriň häsiýetleri, 
-                    ýaşaýyş aýratynlyklary we peýdaly täsirleri barada giňişleýin maglumat
-                  </Paragraph>
+                  <div style={{
+                    height: isMobile ? '200px' : '300px',
+                    background: 'url("/kniga.jpg") center/contain no-repeat',
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundColor: '#f5f5f5',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    width: '100%'
+                  }} />
                 </div>
-                
-                {/* Professional Search */}
-                <Card style={{ 
-                  borderRadius: '16px',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                  border: 'none'
+              </Carousel>
+            </Col>
+          </Row>
+        </div>
+
+        {/* Modern Search Section */}
+        <div style={{ 
+          padding: isMobile ? '40px 20px' : '60px 50px',
+          background: 'linear-gradient(180deg, #ffffff 0%, #f8faf9 100%)',
+        }}>
+          <Row justify="center">
+            <Col xs={24} sm={22} md={20} lg={18} xl={16}>
+              <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+                <Title level={2} style={{ 
+                  fontSize: isMobile ? '1.8rem' : '2.5rem',
+                  fontWeight: 700,
+                  color: '#2c5530',
+                  marginBottom: '16px'
                 }}>
-                  <Space direction="vertical" size="middle" style={{ width: '100%' }}>
-                    <Row gutter={[8, 8]} align="middle">
-                      <Col flex="auto">
-                        <AutoComplete
-                          className="responsive-search"
-                          style={{ width: '100%' }}
-                          size={isMobile ? "middle" : "large"}
-                          value={searchTerm}
-                          options={suggestions}
-                          onSearch={handleInputChange}
-                          onSelect={(value) => {
-                            // Navigate directly to detail page using the plant ID
-                            navigate(`/osumlik/${value}`);
-                          }}
-                          placeholder={isMobile ? "Ösümlik gözle..." : "Ösümliginiň adyny ýazyň..."}
-                          allowClear
-                        />
-                      </Col>
-                      <Col flex="none">
-                        <Button 
-                          type="primary" 
-                          icon={<SearchOutlined />}
-                          loading={loading}
-                          onClick={() => handleSearch(searchTerm)}
-                          size={isMobile ? "middle" : "large"}
-                          style={{
-                            background: '#2c5530',
-                            border: 'none',
-                            borderRadius: '8px',
-                            boxShadow: '0 2px 6px rgba(44, 85, 48, 0.2)',
-                            minWidth: isMobile ? '50px' : 'auto',
-                            padding: isMobile ? '0 12px' : '0 24px',
-                            fontSize: isMobile ? '14px' : '16px',
-                            height: isMobile ? '40px' : '50px'
-                          }}
-                        >
-                          {!isMobile ? 'GÖZLE' : ''}
-                        </Button>
-                      </Col>
-                    </Row>
-                  </Space>
-                </Card>
-              </Space>
+                 Türkmenistanyň Dermanlyk Ösümliklerini Gözläň
+                </Title>
+                <Paragraph style={{ 
+                  fontSize: '16px',
+                  color: '#666',
+                  maxWidth: '600px',
+                  margin: '0 auto'
+                }}>
+                  {totalItems} sany dermanlyk ösümliginiň içinden gözleýäň
+                </Paragraph>
+              </div>
+              
+              <Card 
+                bordered={false}
+                style={{ 
+                  borderRadius: '16px',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.08)',
+                  background: '#ffffff'
+                }}
+                bodyStyle={{ padding: isMobile ? '24px' : '32px' }}
+              >
+                <Row gutter={[16, 16]} align="middle">
+                  <Col xs={24} sm={17} md={18} lg={19}>
+                    <AutoComplete
+                      style={{ width: '100%' }}
+                      size="large"
+                      value={searchTerm}
+                      options={suggestions}
+                      onSearch={handleInputChange}
+                      onSelect={(value) => {
+                        navigate(`/osumlik/${value}`);
+                      }}
+                      placeholder="Ösümliginiň adyny giriziň..."
+                      allowClear
+                    />
+                  </Col>
+                  <Col xs={24} sm={7} md={6} lg={5}>
+                    <Button 
+                      type="primary" 
+                      icon={<SearchOutlined />}
+                      loading={loading}
+                      onClick={() => handleSearch(searchTerm)}
+                      size="large"
+                      block
+                      style={{
+                        background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                        border: 'none',
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        boxShadow: '0 4px 12px rgba(82, 196, 26, 0.3)',
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      GÖZLE
+                    </Button>
+                  </Col>
+                </Row>
+              </Card>
             </Col>
           </Row>
         </div>
 
         {/* Content Section */}
-        <div style={{ padding: '20px 15px 50px' }}>
+        <div style={{ 
+          padding: isMobile ? '20px 15px 50px' : '40px 50px 80px',
+          background: '#f8faf9'
+        }}>
           <Row justify="center">
             <Col xs={24} sm={22} md={20} lg={18} xl={16}>
               
-        
-              
-              {/* Herb List - All Herbs */}
-              {showRecommendations && !loading && herbs.length > 0 && (
-                <div style={{ marginBottom: '50px' }}>
-                  <Title level={3} style={{ marginBottom: '30px' }}>
-                    <MedicineBoxOutlined style={{ marginRight: '8px' }} /> 
-                    Dermanlyk Ösümlikleriň Sanawy
-                  </Title>
-                  
-                  <div style={{ padding: '0 10px' }}>
-                    <List
-                      itemLayout="horizontal"
-                      dataSource={herbs}
-                      renderItem={(herb) => (
-                        <List.Item 
-                          onClick={() => handleItemClick(herb)}
-                          style={{ 
-                            cursor: 'pointer',
-                            padding: '12px 16px',
-                            borderRadius: '8px',
-                            marginBottom: '8px',
-                            background: 'white',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                            transition: 'all 0.3s ease'
-                          }}
-                          className="herb-list-item"
-                        >
-                          <List.Item.Meta
-                            avatar={<Avatar style={{ backgroundColor: '#2c5530' }}>{herb.ady?.charAt(0) || herb.name?.charAt(0)}</Avatar>}
-                            title={<span style={{ fontSize: '16px' }}>{herb.ady || herb.name}</span>}
-                            description={herb.character ? <span style={{ color: '#666' }}>{herb.character}</span> : null}
-                          />
-                        </List.Item>
-                      )}
-                    />
-                  </div>
-                  
-                  {/* Pagination */}
-                  <div style={{ 
-                    marginTop: '20px', 
-                    textAlign: 'center',
-                    padding: '12px',
-                    background: '#f7f7f7',
-                    borderRadius: '8px'
-                  }}>
-                    <Space>
-                      <Button 
-                        disabled={currentPage <= 1} 
-                        onClick={() => {
-                          setCurrentPage(prev => Math.max(1, prev - 1));
-                          window.scrollTo(0, 0);
-                        }}
-                        style={{ background: '#ffffff' }}
-                      >
-                        Öňki
-                      </Button>
-                      <Text strong>Sahypa {currentPage} / {Math.ceil(totalItems / pageSize)}</Text>
-                      <Button 
-                        disabled={currentPage >= Math.ceil(totalItems / pageSize)} 
-                        onClick={() => {
-                          setCurrentPage(prev => Math.min(Math.ceil(totalItems / pageSize), prev + 1));
-                          window.scrollTo(0, 0);
-                        }}
-                        style={{ background: '#ffffff' }}
-                      >
-                        Indiki
-                      </Button>
-                    </Space>
-                  </div>
-                </div>
-              )}
-
-              {/* No Herbs Found */}
-              {showRecommendations && !loading && herbs.length === 0 && (
-                <div style={{ 
-                  textAlign: 'center', 
-                  padding: '50px 20px',
-                  margin: '20px 0',
-                  background: '#f9f9f9',
-                  borderRadius: '12px',
-                  border: '1px dashed #ddd'
-                }}>
-                  <Empty 
-                    image={Empty.PRESENTED_IMAGE_SIMPLE}
-                    description={
-                      <Paragraph style={{ fontSize: '16px', color: '#444', margin: '20px 0' }}>
-                        Dermanlyk Ösümlikleri tapylmady
-                      </Paragraph>
-                    } 
-                  />
-                  <Button type="primary" onClick={() => fetchHerbs()} style={{ background: '#2c5530' }}>
-                    <ReloadOutlined /> Täzeden synaň
-                  </Button>
-                </div>
-              )}
-
-              {/* Loading State */}
-              {loading && (
-                <div style={{ 
-                  textAlign: 'center', 
-                  padding: '60px 20px',
-                  margin: '20px 0',
-                  background: '#f9f9f9',
-                  borderRadius: '12px',
-                  border: '1px dashed #ddd'
-                }}>
-                  <Spin size="large" tip={searchTerm ? `"${searchTerm}" gözlenilýär...` : "Ösümlikler ýüklenýär..."} />
-                </div>
-              )}
-
-              {/* Search Results */}
+              {/* Search Results Section */}
               {!loading && searchResults.length > 0 && (
-                <div>
-                  <Row justify="space-between" align="middle" style={{ marginBottom: '30px' }}>
-                    <Col>
-                      <Title level={3} style={{ margin: 0 }}>
-                        <SearchOutlined /> Gözleg netijeleri ({searchResults.length} sany tapyldy)
-                      </Title>
-                    </Col>
-                    <Col>
-                      <Button 
-                        onClick={() => {
-                          setSearchResults([]);
-                          setSearchTerm('');
-                          setShowRecommendations(true);
-                        }}
-                        icon={<RollbackOutlined />}
-                      >
-                        Doly sanawy gör
-                      </Button>
-                    </Col>
-                  </Row>
-                  <div style={{ padding: '0 10px' }}>
+                <Card 
+                  bordered={false}
+                  style={{
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+                    marginBottom: '40px',
+                    overflow: 'hidden'
+                  }}
+                  bodyStyle={{ padding: 0 }}
+                >
+                  <div style={{ 
+                    background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                    padding: '24px 32px',
+                    color: 'white'
+                  }}>
+                    <Row justify="space-between" align="middle">
+                      <Col>
+                        <Space>
+                          <SearchOutlined style={{ fontSize: '24px' }} />
+                          <div>
+                            <Title level={4} style={{ color: 'white', margin: 0 }}>
+                              Gözleg Netijeleri
+                            </Title>
+                            <Text style={{ color: 'rgba(255,255,255,0.9)' }}>
+                              {searchResults.length} sany netije tapyldy
+                            </Text>
+                          </div>
+                        </Space>
+                      </Col>
+                      <Col>
+                        <Button 
+                          onClick={() => {
+                            setSearchResults([]);
+                            setSearchTerm('');
+                            setShowRecommendations(true);
+                          }}
+                          icon={<RollbackOutlined />}
+                          style={{
+                            background: 'rgba(255,255,255,0.2)',
+                            border: 'none',
+                            color: 'white'
+                          }}
+                        >
+                          Yza
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                  <div style={{ padding: '24px' }}>
                     <List
                       itemLayout="horizontal"
                       dataSource={searchResults}
@@ -606,68 +540,245 @@ const HomePage: React.FC = () => {
                           onClick={() => handleItemClick(osumlik)}
                           style={{ 
                             cursor: 'pointer',
-                            padding: '12px 16px',
-                            borderRadius: '8px',
-                            marginBottom: '8px',
-                            background: 'white',
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                            transition: 'all 0.3s ease'
+                            padding: '16px 20px',
+                            borderBottom: '1px solid #f0f0f0',
+                            transition: 'all 0.3s ease',
+                            background: '#ffffff'
                           }}
-                          className="herb-list-item"
+                          className="herb-list-item-hover"
                         >
                           <List.Item.Meta
-                            avatar={<Avatar style={{ backgroundColor: '#2c5530' }}>{osumlik.ady?.charAt(0) || osumlik.name?.charAt(0)}</Avatar>}
-                            title={<span style={{ fontSize: '16px' }}>{osumlik.ady || osumlik.name}</span>}
-                            description={osumlik.character ? <span style={{ color: '#666' }}>{osumlik.character}</span> : null}
+                            avatar={
+                              <Avatar 
+                                size={48} 
+                                style={{ 
+                                  background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                                  fontSize: '20px',
+                                  fontWeight: 600
+                                }}
+                              >
+                                {osumlik.ady?.charAt(0) || osumlik.name?.charAt(0)}
+                              </Avatar>
+                            }
+                            title={
+                              <Text strong style={{ fontSize: '16px', color: '#2c5530' }}>
+                                {osumlik.ady || osumlik.name}
+                              </Text>
+                            }
+                            description={
+                              osumlik.character && (
+                                <Text type="secondary" style={{ fontSize: '14px' }}>
+                                  {osumlik.character}
+                                </Text>
+                              )
+                            }
+                          />
+                        </List.Item>
+                      )}
+                    />
+                  </div>
+                </Card>
+              )}
+              
+              {/* Herb List - All Herbs */}
+              {showRecommendations && !loading && herbs.length > 0 && (
+                <Card 
+                  bordered={false}
+                  style={{
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+                    marginBottom: '40px',
+                    overflow: 'hidden'
+                  }}
+                  bodyStyle={{ padding: 0 }}
+                >
+                  <div style={{ 
+                    background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                    padding: '24px 32px',
+                    color: 'white'
+                  }}>
+                    <Space>
+                      <MedicineBoxOutlined style={{ fontSize: '24px' }} />
+                      <div>
+                        <Title level={4} style={{ color: 'white', margin: 0 }}>
+                          Türkmenistanyň Dermanlyk Ösümlikleri
+                        </Title>
+                        <Text style={{ color: 'rgba(255,255,255,0.9)' }}>
+                          Türkmenistanyň tebigy hasabaty
+                        </Text>
+                      </div>
+                    </Space>
+                  </div>
+                  
+                  <div style={{ padding: '24px' }}>
+                    <List
+                      itemLayout="horizontal"
+                      dataSource={herbs}
+                      renderItem={(herb) => (
+                        <List.Item 
+                          onClick={() => handleItemClick(herb)}
+                          style={{ 
+                            cursor: 'pointer',
+                            padding: '16px 20px',
+                            borderBottom: '1px solid #f0f0f0',
+                            transition: 'all 0.3s ease',
+                            background: '#ffffff'
+                          }}
+                          className="herb-list-item-hover"
+                        >
+                          <List.Item.Meta
+                            avatar={
+                              <Avatar 
+                                size={48} 
+                                style={{ 
+                                  background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                                  fontSize: '20px',
+                                  fontWeight: 600
+                                }}
+                              >
+                                {herb.ady?.charAt(0) || herb.name?.charAt(0)}
+                              </Avatar>
+                            }
+                            title={
+                              <Text strong style={{ fontSize: '16px', color: '#2c5530' }}>
+                                {herb.ady || herb.name}
+                              </Text>
+                            }
+                            description={
+                              herb.character && (
+                                <Text type="secondary" style={{ fontSize: '14px' }}>
+                                  {herb.character}
+                                </Text>
+                              )
+                            }
                           />
                         </List.Item>
                       )}
                     />
                   </div>
                   
-                  {/* Pagination for search results */}
-                  {searchResults.length > pageSize && (
-                    <div style={{ 
-                      marginTop: '20px', 
-                      textAlign: 'center',
-                      padding: '12px',
-                      background: '#f7f7f7',
-                      borderRadius: '8px'
-                    }}>
-                      <Button 
-                        onClick={() => {
-                          const currentSet = searchResults.slice(0, pageSize);
-                          setSearchResults(currentSet);
-                        }}
-                        type="primary" 
-                        style={{ background: '#2c5530' }}
-                      >
-                        İlki {pageSize} netijäni görkeziň
-                      </Button>
-                    </div>
-                  )}
-                </div>
+                  {/* Modern Pagination */}
+                  <div style={{ 
+                    padding: '24px 32px',
+                    background: '#fafafa',
+                    borderTop: '1px solid #f0f0f0'
+                  }}>
+                    <Row justify="space-between" align="middle">
+                      <Col>
+                        <Text type="secondary">
+                          Sahypa {currentPage} / {Math.ceil(totalItems / pageSize)}
+                        </Text>
+                      </Col>
+                      <Col>
+                        <Space size="middle">
+                          <Button 
+                            disabled={currentPage <= 1} 
+                            onClick={() => {
+                              setCurrentPage(prev => Math.max(1, prev - 1));
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            icon={<RollbackOutlined />}
+                          >
+                            Öňki
+                          </Button>
+                          <Button 
+                            type="primary"
+                            disabled={currentPage >= Math.ceil(totalItems / pageSize)} 
+                            onClick={() => {
+                              setCurrentPage(prev => Math.min(Math.ceil(totalItems / pageSize), prev + 1));
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            style={{
+                              background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                              border: 'none'
+                            }}
+                          >
+                            Indiki
+                          </Button>
+                        </Space>
+                      </Col>
+                    </Row>
+                  </div>
+                </Card>
               )}
 
-              {/* Empty State */}
-              {!loading && searchTerm && searchResults.length === 0 && (
-                <div style={{ 
-                  textAlign: 'center', 
-                  padding: '50px 20px',
-                  margin: '20px 0',
-                  background: '#f9f9f9',
-                  borderRadius: '12px',
-                  border: '1px dashed #ddd'
-                }}>
+              {/* No Herbs Found */}
+              {showRecommendations && !loading && herbs.length === 0 && (
+                <Card 
+                  bordered={false}
+                  style={{
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+                    textAlign: 'center'
+                  }}
+                  bodyStyle={{ padding: '60px 40px' }}
+                >
                   <Empty 
                     image={Empty.PRESENTED_IMAGE_SIMPLE}
                     description={
                       <Space direction="vertical" size="large">
-                        <Text style={{ fontSize: '18px', color: '#444' }}>
-                          "{searchTerm}" üçin hiç zat tapylmady
-                        </Text>
-                        <Text style={{ color: '#777' }}>
-                          Başga açar sözleri synanyşyň: alma, sarymsaküs, aýdogan
+                        <Title level={4} style={{ color: '#666' }}>
+                          Dermanlyk Ösümlikleri tapylmady
+                        </Title>
+                        <Button 
+                          type="primary" 
+                          onClick={() => fetchHerbs()}
+                          icon={<ReloadOutlined />}
+                          size="large"
+                          style={{
+                            background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                            border: 'none'
+                          }}
+                        >
+                          Täzeden synaň
+                        </Button>
+                      </Space>
+                    } 
+                  />
+                </Card>
+              )}
+
+              {/* Loading State */}
+              {loading && (
+                <Card 
+                  bordered={false}
+                  style={{
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+                    textAlign: 'center'
+                  }}
+                  bodyStyle={{ padding: '80px 40px' }}
+                >
+                  <Spin size="large" tip={
+                    <Text style={{ fontSize: '16px', marginTop: '16px', display: 'block' }}>
+                      {searchTerm ? `"${searchTerm}" gözlenilýär...` : "Ösümlikler ýüklenýär..."}
+                    </Text>
+                  } />
+                </Card>
+              )}
+
+
+
+              {/* Empty State */}
+              {!loading && searchTerm && searchResults.length === 0 && (
+                <Card 
+                  bordered={false}
+                  style={{
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
+                    textAlign: 'center'
+                  }}
+                  bodyStyle={{ padding: '60px 40px' }}
+                >
+                  <Empty 
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={
+                      <Space direction="vertical" size="large">
+                        <Title level={4} style={{ color: '#666', margin: 0 }}>
+                          "{searchTerm}" üçin netije tapylmady
+                        </Title>
+                        <Text type="secondary" style={{ fontSize: '16px' }}>
+                          Başga açar sözler bilen synanyşyň
                         </Text>
                         <Button 
                           type="primary" 
@@ -677,70 +788,124 @@ const HomePage: React.FC = () => {
                             setShowRecommendations(true);
                           }}
                           icon={<RollbackOutlined />}
-                          style={{ marginTop: '20px' }}
+                          size="large"
+                          style={{
+                            background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                            border: 'none'
+                          }}
                         >
-                          Doly sanawy gör
+                          Ähli ösümlikleri gör
                         </Button>
                       </Space>
                     }
                   />
-                </div>
+                </Card>
               )}
             </Col>
           </Row>
         </div>
       </Content>
 
-      {/* Professional Footer */}
+      {/* Modern Professional Footer */}
       <Footer style={{ 
-        background: '#001529',
-        color: 'white',
-        padding: '50px 50px 20px'
+        background: '#ffffff',
+        borderTop: '1px solid #e8e8e8',
+        padding: '60px 50px 30px',
+        marginTop: '60px'
       }}>
-        <Row gutter={[32, 32]}>
-          <Col xs={24} sm={8}>
-            <Space direction="vertical" size="middle">
-              <Space align="center">
-                <MedicineBoxOutlined style={{ fontSize: '24px', color: '#52c41a' }} />
-                <Title level={4} style={{ color: 'white', margin: 0 }}>
-                  Dermanlyk Ösümlikleri
+        <Row gutter={[48, 32]} justify="center">
+          <Col xs={24} sm={24} md={8} lg={8}>
+            <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+              <Space align="center" size="middle">
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px',
+                  background: 'linear-gradient(135deg, #2c5530 0%, #52c41a 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <MedicineBoxOutlined style={{ fontSize: '24px', color: 'white' }} />
+                </div>
+                <Title level={4} style={{ margin: 0, color: '#2c5530' }}>
+                  Türkmenistanyň Dermanlyk Ösümlikleri
                 </Title>
               </Space>
-              <Paragraph style={{ color: '#ccc' }}>
-                Türkmenistanyň tebigatynyň baý dünýäsindäki derman ösümliklerine degişli giňişleýin maglumatlar bazasy
+              <Paragraph style={{ color: '#666', marginBottom: 0 }}>
+                Türkmenistanyň tebigatynyň baý dünýäsindäki dermanlyk ösümliklerine degişli giňişleýin maglumatlar bazasy
               </Paragraph>
             </Space>
           </Col>
-          <Col xs={24} sm={8}>
-            <Title level={4} style={{ color: 'white' }}>Biziň Salgylarymyz</Title>
-            <Space direction="vertical" style={{ color: '#ccc' }}>
+          
+          <Col xs={24} sm={12} md={8} lg={8}>
+            <Title level={5} style={{ color: '#2c5530', marginBottom: '20px' }}>
+              Biziň Salgylarymyz
+            </Title>
+            <Space direction="vertical" size="middle" style={{ width: '100%' }}>
               <Space>
-                <EnvironmentOutlined />
-                <Text style={{ color: '#ccc' }}>Aşgabat ş., Bitarap Türkmenistan şaýoly, 12</Text>
+                <EnvironmentOutlined style={{ color: '#52c41a', fontSize: '16px' }} />
+                <Text style={{ color: '#666' }}>Aşgabat ş., Türkmenistan</Text>
               </Space>
               <Space>
-                <PhoneOutlined />
-                <Text style={{ color: '#ccc' }}>+993 12 345678</Text>
+                <PhoneOutlined style={{ color: '#52c41a', fontSize: '16px' }} />
+                <Text style={{ color: '#666' }}>+993 12 345678</Text>
               </Space>
               <Space>
-                <MailOutlined />
-                <Text style={{ color: '#ccc' }}>dermanlyk@example.com</Text>
+                <MailOutlined style={{ color: '#52c41a', fontSize: '16px' }} />
+                <Text style={{ color: '#666' }}>info@dermanlyk.tm</Text>
               </Space>
             </Space>
           </Col>
-          <Col xs={24} sm={8}>
-            <Title level={4} style={{ color: 'white' }}>Bizi yzarlaň</Title>
-            <Space size="large">
-              <Button shape="circle" icon={<TwitterOutlined />} style={{ background: 'transparent', borderColor: '#ccc', color: '#ccc' }} />
-              <Button shape="circle" icon={<GithubOutlined />} style={{ background: 'transparent', borderColor: '#ccc', color: '#ccc' }} />
-              <Button shape="circle" icon={<LinkedinOutlined />} style={{ background: 'transparent', borderColor: '#ccc', color: '#ccc' }} />
+          
+          <Col xs={24} sm={12} md={8} lg={8}>
+            <Title level={5} style={{ color: '#2c5530', marginBottom: '20px' }}>
+              Bizi yzarlaň
+            </Title>
+            <Space size="middle">
+              <Button 
+                shape="circle" 
+                size="large"
+                icon={<TwitterOutlined />} 
+                style={{ 
+                  background: '#f5f5f5',
+                  border: 'none',
+                  color: '#666'
+                }} 
+              />
+              <Button 
+                shape="circle" 
+                size="large"
+                icon={<GithubOutlined />} 
+                style={{ 
+                  background: '#f5f5f5',
+                  border: 'none',
+                  color: '#666'
+                }} 
+              />
+              <Button 
+                shape="circle" 
+                size="large"
+                icon={<LinkedinOutlined />} 
+                style={{ 
+                  background: '#f5f5f5',
+                  border: 'none',
+                  color: '#666'
+                }} 
+              />
             </Space>
           </Col>
         </Row>
-        <Divider style={{ background: '#333' }} />
-        <div style={{ textAlign: 'center', color: '#999' }}>
-          © 2025 Dermanlyk Ösümlikleri. Ähli hukuklar goralan.
-        </div>
+        
+        <Divider style={{ margin: '40px 0 24px 0', borderColor: '#e8e8e8' }} />
+        
+        <Row justify="center">
+          <Col>
+            <Text style={{ color: '#999', textAlign: 'center' }}>
+              © 2025 Dermanlyk Ösümlikleri. Ähli hukuklar goragly.
+            </Text>
+          </Col>
+        </Row>
       </Footer>
     </Layout>
   );
